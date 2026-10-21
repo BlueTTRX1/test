@@ -1,35 +1,56 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="theme-color" content="#09090c">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100812">
+
   <title>Telega Account — VA Store</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
-      --bg: #09090c;
-      --card: #121217;
-      --pink: #ff176b;
-      --text: #ffffff;
-      --muted: #92909b;
-      --border: #29232b;
+      --bg: #100812;
+      --card: #1b1020;
+      --card-light: #241329;
+      --pink: #ff2e93;
+      --pink-light: #ff70b5;
+      --text: #fff5fb;
+      --muted: #ad9baa;
+      --border: rgba(255, 46, 147, 0.2);
+      --green: #58e6a4;
+      --red: #ff6c86;
+      --yellow: #ffd36a;
     }
 
     * {
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
+      padding: 22px 16px 100px;
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(255, 46, 147, 0.15),
+          transparent 45%
+        ),
+        var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
     }
 
     a {
@@ -37,281 +58,691 @@
       text-decoration: none;
     }
 
-    .app {
-      width: 100%;
-      max-width: 480px;
-      min-height: 100vh;
-      margin: auto;
-      padding: 24px 18px 110px;
+    button {
+      font: inherit;
     }
 
-    .header {
+    .top-line {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 12px;
-      margin-bottom: 30px;
-    }
-
-    .logo {
-      width: 45px;
-      height: 45px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      border-radius: 14px;
-      background: var(--pink);
-      font-size: 19px;
-      font-weight: 900;
-      letter-spacing: -2px;
-      box-shadow: 0 0 25px #ff176b25;
+      margin-bottom: 28px;
     }
 
     .brand {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -.7px;
-    }
-
-    .brand span {
-      color: var(--pink);
-    }
-
-    .subtitle {
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .back {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 25px;
-      color: var(--muted);
-      font-size: 13px;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
     }
 
-    .back:active {
-      color: var(--pink);
-    }
-
-    .profile {
-      padding: 25px 20px;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: linear-gradient(145deg, #19131b, #101014);
-      text-align: center;
-    }
-
-    .seller-logo {
-      width: 78px;
-      height: 78px;
+    .brand-logo {
       display: grid;
       place-items: center;
-      margin: 0 auto 18px;
-      border: 1px solid #59203a;
-      border-radius: 23px;
-      background: #24101b;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 46, 147, 0.55);
+      border-radius: 13px;
+      background: linear-gradient(145deg, #35132c, #170c1b);
       color: var(--pink);
-      font-size: 29px;
+      font-size: 17px;
       font-weight: 900;
+      box-shadow: 0 0 22px rgba(255, 46, 147, 0.12);
     }
 
-    h1 {
-      margin: 0;
-      font-size: 25px;
-      letter-spacing: -.7px;
+    .brand-subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
     }
 
     .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin-top: 12px;
-      padding: 7px 11px;
-      border: 1px solid #39202c;
+      padding: 7px 10px;
+      border: 1px solid rgba(88, 230, 164, 0.25);
       border-radius: 30px;
-      color: #e4b5ca;
+      background: rgba(88, 230, 164, 0.07);
+      color: var(--green);
       font-size: 11px;
+      white-space: nowrap;
     }
 
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--pink);
-    }
-
-    .description {
-      margin: 19px 0 0;
-      color: #aaa8b3;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .label {
-      margin: 29px 0 13px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .info {
-      padding: 18px;
+    .seller-card {
+      padding: 21px;
       border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--card);
+      border-radius: 22px;
+      background: linear-gradient(
+        145deg,
+        rgba(36, 19, 41, 0.97),
+        rgba(22, 12, 26, 0.97)
+      );
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .seller-top {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .seller-logo {
+      display: grid;
+      place-items: center;
+      flex: 0 0 64px;
+      width: 64px;
+      height: 64px;
+      border: 1px solid rgba(255, 46, 147, 0.4);
+      border-radius: 19px;
+      background: rgba(255, 46, 147, 0.08);
+      color: var(--pink);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .seller-name {
+      margin-bottom: 6px;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .seller-description {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .seller-info {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.12);
     }
 
     .info-title {
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       font-size: 14px;
       font-weight: 700;
     }
 
     .info-text {
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
+      font-size: 13px;
+      line-height: 1.65;
     }
 
     .button {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      margin-top: 12px;
-      padding: 15px;
+      min-height: 48px;
+      padding: 13px 16px;
       border: 0;
       border-radius: 13px;
-      background: var(--pink);
-      color: white;
+      background: linear-gradient(100deg, #ff278d, #ff4ba4);
+      color: #fff;
       font-size: 14px;
-      font-weight: 750;
+      font-weight: 800;
       text-align: center;
       cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    .button:active {
+      transform: scale(0.98);
     }
 
     .button.secondary {
       border: 1px solid var(--border);
-      background: #171117;
+      background: rgba(255, 46, 147, 0.07);
+      color: var(--pink-light);
     }
 
-    .button:active {
-      opacity: .8;
-      transform: scale(.99);
+    .seller-button {
+      margin-top: 17px;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .catalog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .count {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--pink-light);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .catalog-note {
+      margin: 0 0 15px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .products {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .product {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: linear-gradient(
+        145deg,
+        rgba(36, 19, 41, 0.95),
+        rgba(25, 13, 29, 0.95)
+      );
+    }
+
+    .product-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .country {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .phone-code {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .price {
+      color: var(--pink-light);
+      font-size: 23px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .sku {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 15px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 46, 147, 0.18);
+      border-radius: 9px;
+      background: rgba(255, 46, 147, 0.06);
+      color: var(--pink-light);
+      font-size: 12px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 17px 0;
+    }
+
+    .feature {
+      min-width: 0;
+      padding: 11px;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .feature-name {
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .feature-value {
+      font-size: 13px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .yes {
+      color: var(--red);
+    }
+
+    .no {
+      color: var(--green);
+    }
+
+    .unknown {
+      color: var(--yellow);
+    }
+
+    .buy-button {
+      margin-top: 2px;
+    }
+
+    .notice {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      border: 1px solid rgba(255, 46, 147, 0.4);
+      border-radius: 18px;
+      background: rgba(255, 46, 147, 0.07);
+      scroll-margin-top: 20px;
+    }
+
+    .notice.visible {
+      display: block;
+      animation: appear 0.2s ease-out;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .notice-title {
+      margin: 0 0 9px;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .notice-text {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .selected-sku {
+      margin: 12px 0;
+      padding: 12px;
+      border: 1px dashed rgba(255, 46, 147, 0.45);
+      border-radius: 11px;
+      color: var(--pink-light);
+      font-size: 20px;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .notice .button + .button {
+      margin-top: 9px;
     }
 
     .footer {
-      margin-top: 27px;
-      color: #62616b;
+      margin-top: 25px;
+      color: var(--muted);
       font-size: 11px;
+      line-height: 1.7;
       text-align: center;
     }
 
-    .bottom {
+    .support-link {
       position: fixed;
-      z-index: 5;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      padding: 14px 18px max(18px, env(safe-area-inset-bottom));
-      border-top: 1px solid #211b23;
-      background: #09090cf2;
-      backdrop-filter: blur(18px);
+      right: 16px;
+      bottom: 16px;
+      left: 16px;
+      z-index: 10;
+      display: block;
+      width: calc(100% - 32px);
+      max-width: 488px;
+      margin: 0 auto;
+      padding: 15px;
+      border: 1px solid rgba(255, 46, 147, 0.28);
+      border-radius: 15px;
+      background: rgba(27, 16, 32, 0.94);
+      color: var(--pink-light);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(12px);
     }
 
-    .bottom-inner {
-      max-width: 444px;
-      margin: auto;
+    @media (max-width: 360px) {
+      body {
+        padding-right: 12px;
+        padding-left: 12px;
+      }
+
+      .seller-card,
+      .product {
+        padding: 14px;
+      }
+
+      .seller-name {
+        font-size: 19px;
+      }
+
+      .price {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <main class="app">
+  <main class="container">
 
-    <header class="header">
-      <div class="logo">VA</div>
-      <div>
-        <div class="brand">VA <span>STORE</span></div>
-        <div class="subtitle">Маркетплейс Telegram</div>
+    <!-- Шапка -->
+    <header class="top-line">
+      <div class="brand">
+        <div class="brand-logo">TA</div>
+
+        <div>
+          <div>TELEGA ACCOUNT</div>
+          <div class="brand-subtitle">VA Store</div>
+        </div>
       </div>
+
+      <div class="status">● Магазин</div>
     </header>
 
-    <a href="./index.html" class="back">← Назад в каталог</a>
+    <!-- Информация о продавце -->
+    <section class="seller-card">
+      <div class="seller-top">
+        <div class="seller-logo">TA</div>
 
-    <section class="profile">
-      <div class="seller-logo">TA</div>
-
-      <h1>Telega Account</h1>
-
-      <div class="status">
-        <span class="dot"></span>
-        Продавец VA Store
+        <div>
+          <div class="seller-name">Telega Account</div>
+          <div class="seller-description">
+            Аккаунты Telegram<br>
+            Магазин VA Store
+          </div>
+        </div>
       </div>
 
-      <p class="description">
-        Добро пожаловать в магазин Telega Account.
-        Здесь размещается информация о продавце,
-        его товарах и условиях покупки.
+      <div class="seller-info">
+        <div class="info-title">Информация о магазине</div>
+
+        <div class="info-text">
+          Выберите товар из каталога и нажмите «Купить».
+          После этого скопируйте SKU выбранного аккаунта
+          и отправьте его менеджеру для уточнения заказа.
+        </div>
+      </div>
+
+      <button
+        class="button seller-button"
+        id="sellerButton"
+        type="button"
+      >
+        Связаться с менеджером →
+      </button>
+    </section>
+
+    <!-- Каталог -->
+    <section class="section" id="catalog">
+      <div class="catalog-head">
+        <h1 class="section-title">Каталог аккаунтов</h1>
+        <div class="count">1 товар</div>
+      </div>
+
+      <p class="catalog-note">
+        Характеристики указаны в карточке товара.
+        Перед оплатой уточните наличие у менеджера.
       </p>
-    </section>
 
-    <div class="label">Информация</div>
+      <div class="products">
 
-    <section class="info">
-      <div class="info-title">О магазине</div>
-      <div class="info-text">
-        Каталог цифровых товаров и аккаунтов.
-        Ассортимент, цены и условия покупки
-        уточняйте у продавца.
+        <!-- ТЕСТОВЫЙ ТОВАР
+             Для добавления товаров скопируй этот article
+             и измени страну, код, цену, характеристики и SKU. -->
+
+        <article class="product">
+          <div class="product-top">
+            <div>
+              <div class="country">
+                <span>🇺🇦</span>
+                <span>Украина</span>
+              </div>
+
+              <div class="phone-code">
+                Код страны: +380
+              </div>
+            </div>
+
+            <div class="price">$5</div>
+          </div>
+
+          <div class="sku">
+            SKU: 483721
+          </div>
+
+          <div class="features">
+            <div class="feature">
+              <div class="feature-name">Spamblock</div>
+              <div class="feature-value no">Нет</div>
+            </div>
+
+            <div class="feature">
+              <div class="feature-name">Отлега</div>
+              <div class="feature-value unknown">3 месяца</div>
+            </div>
+          </div>
+
+          <button
+            class="button buy-button"
+            type="button"
+            data-sku="483721"
+          >
+            Купить аккаунт →
+          </button>
+        </article>
+
+        <!-- Добавляй новые карточки товаров здесь -->
+
       </div>
     </section>
 
-    <!-- Кнопка пока ведёт к заглушке -->
-    <button class="button" id="sellerButton" type="button">
-      Товары продавца →
-    </button>
+    <!-- Инструкция после выбора товара -->
+    <section class="notice" id="orderNotice">
+      <h2 class="notice-title">Оформление заказа</h2>
 
-    <a class="button secondary" href="./index.html">
-      Вернуться в VA Store
-    </a>
+      <p class="notice-text">
+        1. Скопируйте SKU товара ниже.<br>
+        2. Нажмите «Написать менеджеру».<br>
+        3. Отправьте менеджеру скопированный код
+        и уточните наличие товара перед оплатой.
+      </p>
 
-    <div class="footer">
-      VA STORE · DIGITAL MARKETPLACE
-    </div>
+      <div class="selected-sku" id="selectedSku">
+        483721
+      </div>
+
+      <button
+        class="button secondary"
+        id="copySkuButton"
+        type="button"
+      >
+        Скопировать SKU
+      </button>
+
+      <button
+        class="button"
+        id="managerOrderButton"
+        type="button"
+      >
+        Написать менеджеру →
+      </button>
+    </section>
+
+    <footer class="footer">
+      VA Store · Telega Account<br>
+      Демонстрационный товар. Условия сделки уточняются у менеджера.
+    </footer>
 
   </main>
 
-  <div class="bottom">
-    <div class="bottom-inner">
-      <a class="button secondary"
-         href="https://t.me/VAstorTG"
-         target="_blank"
-         rel="noopener noreferrer">
-        ✳ Техническая поддержка
-      </a>
-    </div>
-  </div>
+  <!-- Поддержка -->
+  <a
+    class="support-link"
+    id="supportButton"
+    href="https://t.me/vaeurope"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Поддержка магазина · @vaeurope 
+  </a>
 
   <script>
+    // Ссылки магазина
+    const MANAGER = "https://t.me/vaeurope";
+    const SUPPORT = "https://t.me/vaeurope";
+
     const tg = window.Telegram?.WebApp;
 
     if (tg) {
       tg.ready();
       tg.expand();
-      tg.setHeaderColor("#09090c");
-      tg.setBackgroundColor("#09090c");
     }
 
-    document.getElementById("sellerButton").addEventListener("click", () => {
-      if (tg) {
-        tg.showAlert("Раздел товаров пока не настроен.");
-      } else {
-        alert("Раздел товаров пока не настроен.");
-      }
+    // Кнопка связи с менеджером в карточке продавца
+    document
+      .getElementById("sellerButton")
+      .addEventListener("click", () => {
+        openTelegramLink(MANAGER);
+      });
+
+    // Поддержка
+    document
+      .getElementById("supportButton")
+      .addEventListener("click", (event) => {
+        event.preventDefault();
+        openTelegramLink(SUPPORT);
+      });
+
+    // Выбранный товар
+    let selectedSku = "";
+
+    // Выбор товара и попытка копирования SKU
+    document.querySelectorAll(".buy-button").forEach((button) => {
+      button.addEventListener("click", async () => {
+        selectedSku = button.dataset.sku;
+
+        document.getElementById("selectedSku").textContent =
+          selectedSku;
+
+        const notice = document.getElementById("orderNotice");
+        notice.classList.add("visible");
+
+        document.getElementById("copySkuButton").textContent =
+          "Скопировать SKU";
+
+        if (tg?.HapticFeedback) {
+          tg.HapticFeedback.impactOccurred("light");
+        }
+
+        notice.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
+
+        // Сразу пробуем скопировать код.
+        // Если копирование запрещено браузером,
+        // пользователь сможет нажать отдельную кнопку.
+        const copied = await copyText(selectedSku);
+
+        if (copied) {
+          document.getElementById("copySkuButton").textContent =
+            "SKU скопирован ✓";
+        }
+      });
     });
+
+    // Повторное копирование SKU
+    document
+      .getElementById("copySkuButton")
+      .addEventListener("click", async () => {
+        if (!selectedSku) return;
+
+        const copied = await copyText(selectedSku);
+        const button = document.getElementById("copySkuButton");
+
+        button.textContent = copied
+          ? "SKU скопирован ✓"
+          : "Не удалось скопировать — выберите код вручную";
+
+        if (tg?.HapticFeedback && copied) {
+          tg.HapticFeedback.notificationOccurred("success");
+        }
+      });
+
+    // Переход к менеджеру после выбора товара
+    document
+      .getElementById("managerOrderButton")
+      .addEventListener("click", () => {
+        if (!selectedSku) return;
+        openTelegramLink(MANAGER);
+      });
+
+    // Открытие Telegram-ссылок
+    function openTelegramLink(url) {
+      if (tg && typeof tg.openTelegramLink === "function") {
+        tg.openTelegramLink(url);
+      } else {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+    }
+
+    // Копирование текста с запасным вариантом
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (error) {
+        // Продолжаем к запасному способу.
+      }
+
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        textarea.style.top = "0";
+
+        document.body.appendChild(textarea);
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+
+        const success = document.execCommand("copy");
+        textarea.remove();
+
+        return success;
+      } catch (error) {
+        return false;
+      }
+    }
   </script>
 </body>
 </html>
