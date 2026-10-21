@@ -3,10 +3,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0,
-        maximum-scale=1.0, user-scalable=no">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#09090c">
   <title>VA Store</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,7 +15,7 @@
       --card: #121217;
       --pink: #ff176b;
       --text: #ffffff;
-      --muted: #888892;
+      --muted: #92909b;
       --border: #29232b;
     }
 
@@ -31,12 +29,12 @@
       min-height: 100vh;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont,
-                   "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    button, a {
-      font: inherit;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .app {
@@ -44,14 +42,14 @@
       max-width: 480px;
       min-height: 100vh;
       margin: auto;
-      padding: 24px 18px 105px;
+      padding: 24px 18px 110px;
     }
 
     .header {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 35px;
+      margin-bottom: 40px;
     }
 
     .logo {
@@ -59,9 +57,9 @@
       height: 45px;
       display: grid;
       place-items: center;
+      flex-shrink: 0;
       border-radius: 14px;
       background: var(--pink);
-      color: #fff;
       font-size: 19px;
       font-weight: 900;
       letter-spacing: -2px;
@@ -71,7 +69,7 @@
     .brand {
       font-size: 19px;
       font-weight: 800;
-      letter-spacing: -0.7px;
+      letter-spacing: -.7px;
     }
 
     .brand span {
@@ -80,29 +78,40 @@
 
     .subtitle {
       margin-top: 4px;
-      font-size: 12px;
       color: var(--muted);
+      font-size: 12px;
     }
 
     .heading {
-      margin-bottom: 18px;
+      margin-bottom: 30px;
     }
 
     .heading h1 {
-      margin: 0 0 8px;
-      font-size: 27px;
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
       letter-spacing: -1px;
+    }
+
+    .heading h1 span {
+      color: var(--pink);
     }
 
     .heading p {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
     }
 
     .section-label {
-      margin: 28px 0 12px;
       color: var(--muted);
       font-size: 11px;
       font-weight: 700;
@@ -110,11 +119,30 @@
       text-transform: uppercase;
     }
 
+    .count {
+      padding: 5px 9px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--pink);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
     .seller {
+      display: block;
       padding: 20px;
       border: 1px solid var(--border);
       border-radius: 22px;
-      background: linear-gradient(145deg, #17131a, #101014);
+      background: linear-gradient(145deg, #19131b, #101014);
+      transition: border-color .2s, transform .15s;
+    }
+
+    .seller:hover {
+      border-color: #6b2545;
+    }
+
+    .seller:active {
+      transform: scale(.985);
     }
 
     .seller-top {
@@ -129,9 +157,9 @@
       display: grid;
       place-items: center;
       flex-shrink: 0;
+      border: 1px solid #59203a;
       border-radius: 17px;
       background: #24101b;
-      border: 1px solid #59203a;
       color: var(--pink);
       font-size: 22px;
       font-weight: 900;
@@ -145,24 +173,25 @@
     .seller-status {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       margin-top: 7px;
-      color: #a4a4ad;
+      color: #aaa8b3;
       font-size: 12px;
     }
 
     .dot {
       width: 7px;
       height: 7px;
-      background: var(--pink);
+      flex-shrink: 0;
       border-radius: 50%;
+      background: var(--pink);
     }
 
     .description {
       margin: 18px 0;
-      color: #aaaab4;
+      color: #aaa8b3;
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     .primary {
@@ -176,27 +205,24 @@
       font-size: 14px;
       font-weight: 750;
       text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform .15s, opacity .15s;
     }
 
-    .primary:active,
-    .support:active {
-      transform: scale(.98);
-      opacity: .8;
+    .footer {
+      margin-top: 28px;
+      color: #62616b;
+      font-size: 11px;
+      text-align: center;
     }
 
     .bottom {
       position: fixed;
       z-index: 5;
+      right: 0;
       bottom: 0;
       left: 0;
-      right: 0;
-      padding: 14px 18px;
-      padding-bottom: max(18px, env(safe-area-inset-bottom));
-      background: #09090cf2;
+      padding: 14px 18px max(18px, env(safe-area-inset-bottom));
       border-top: 1px solid #211b23;
+      background: #09090cf2;
       backdrop-filter: blur(18px);
     }
 
@@ -207,8 +233,8 @@
 
     .support {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       width: 100%;
       padding: 15px;
@@ -216,9 +242,8 @@
       border-radius: 14px;
       background: #171117;
       color: white;
+      font-size: 14px;
       font-weight: 650;
-      text-decoration: none;
-      transition: transform .15s, opacity .15s;
     }
 
     .support-icon {
@@ -226,11 +251,8 @@
       font-size: 19px;
     }
 
-    .footer {
-      margin-top: 26px;
-      color: #62616b;
-      font-size: 11px;
-      text-align: center;
+    .support:active {
+      opacity: .8;
     }
   </style>
 </head>
@@ -239,24 +261,29 @@
   <main class="app">
 
     <header class="header">
-      <div class="logo">VA-S</div>
-
+      <div class="logo">VA</div>
       <div>
         <div class="brand">VA <span>STORE</span></div>
-        <div class="subtitle">Created VA Group</div>
+        <div class="subtitle">Маркетплейс Telegram</div>
       </div>
     </header>
 
     <section class="heading">
-      <h1>Test<br>Test</h1>
+      <h1>Выбирай своего<br><span>продавца.</span></h1>
       <p>
-        Test<br>
+        Магазины цифровых товаров<br>
+        в одном месте.
       </p>
     </section>
 
-    <div class="section-label">Продавцы · 1</div>
+    <div class="section-header">
+      <div class="section-label">Продавцы</div>
+      <div class="count">01</div>
+    </div>
 
-    <section class="seller">
+    <!-- Внутренний переход на страницу продавца -->
+    <a href="./telega.html" class="seller">
+
       <div class="seller-top">
         <div class="seller-logo">TA</div>
 
@@ -264,40 +291,33 @@
           <div class="seller-name">Telega Account</div>
           <div class="seller-status">
             <span class="dot"></span>
-            Провереный Продавец 
+            Продавец VA Store
           </div>
         </div>
       </div>
 
       <p class="description">
-        Test
+        Цифровые товары и аккаунты.
+        Перейди в магазин, чтобы ознакомиться
+        с ассортиментом и условиями покупки.
       </p>
 
-      <a
-        class="primary"
-        href="https://t.me/TELEGA_ACCOUNT"
-        id="sellerButton"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Открыть магазин ↗
-      </a>
-    </section>
+      <div class="primary">Открыть магазин →</div>
+
+    </a>
 
     <div class="footer">
-      VA STORE · VAGUARD
+      VA STORE · DIGITAL MARKETPLACE
     </div>
 
   </main>
 
   <div class="bottom">
     <div class="bottom-inner">
-      <a
-        class="support"
-        href="https://t.me/VAstorTG"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a class="support"
+         href="https://t.me/VAstorTG"
+         target="_blank"
+         rel="noopener noreferrer">
         <span class="support-icon">✳</span>
         Техническая поддержка
       </a>
@@ -310,21 +330,10 @@
     if (tg) {
       tg.ready();
       tg.expand();
-
-      // Подстраиваем фон под Telegram
       tg.setHeaderColor("#09090c");
       tg.setBackgroundColor("#09090c");
     }
-
-    // Заменить на реальную ссылку продавца
-    const sellerButton = document.getElementById("sellerButton");
-
-    sellerButton.addEventListener("click", function(event) {
-      if (this.getAttribute("href") === "https://t.me/TELEGA_ACCOUNT") {
-        event.preventDefault();
-        tg?.showAlert("Укажи настоящую ссылку магазина Telega Account.");
-      }
-    });
   </script>
 </body>
 </html>
+
