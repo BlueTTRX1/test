@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#09090c">
+  <title>Telega Account — VA Store</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root {
+      --bg: #09090c;
+      --card: #121217;
+      --pink: #ff176b;
+      --text: #ffffff;
+      --muted: #92909b;
+      --border: #29232b;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      margin: auto;
+      padding: 24px 18px 110px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: var(--pink);
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      box-shadow: 0 0 25px #ff176b25;
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -.7px;
+    }
+
+    .brand span {
+      color: var(--pink);
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 25px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .back:active {
+      color: var(--pink);
+    }
+
+    .profile {
+      padding: 25px 20px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(145deg, #19131b, #101014);
+      text-align: center;
+    }
+
+    .seller-logo {
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 18px;
+      border: 1px solid #59203a;
+      border-radius: 23px;
+      background: #24101b;
+      color: var(--pink);
+      font-size: 29px;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 25px;
+      letter-spacing: -.7px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 12px;
+      padding: 7px 11px;
+      border: 1px solid #39202c;
+      border-radius: 30px;
+      color: #e4b5ca;
+      font-size: 11px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+
+    .description {
+      margin: 19px 0 0;
+      color: #aaa8b3;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .label {
+      margin: 29px 0 13px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .info {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card);
+    }
+
+    .info-title {
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .info-text {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .button {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 15px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--pink);
+      color: white;
+      font-size: 14px;
+      font-weight: 750;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      border: 1px solid var(--border);
+      background: #171117;
+    }
+
+    .button:active {
+      opacity: .8;
+      transform: scale(.99);
+    }
+
+    .footer {
+      margin-top: 27px;
+      color: #62616b;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .bottom {
+      position: fixed;
+      z-index: 5;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 14px 18px max(18px, env(safe-area-inset-bottom));
+      border-top: 1px solid #211b23;
+      background: #09090cf2;
+      backdrop-filter: blur(18px);
+    }
+
+    .bottom-inner {
+      max-width: 444px;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+
+    <header class="header">
+      <div class="logo">VA</div>
+      <div>
+        <div class="brand">VA <span>STORE</span></div>
+        <div class="subtitle">Маркетплейс Telegram</div>
+      </div>
+    </header>
+
+    <a href="./index.html" class="back">← Назад в каталог</a>
+
+    <section class="profile">
+      <div class="seller-logo">TA</div>
+
+      <h1>Telega Account</h1>
+
+      <div class="status">
+        <span class="dot"></span>
+        Продавец VA Store
+      </div>
+
+      <p class="description">
+        Добро пожаловать в магазин Telega Account.
+        Здесь размещается информация о продавце,
+        его товарах и условиях покупки.
+      </p>
+    </section>
+
+    <div class="label">Информация</div>
+
+    <section class="info">
+      <div class="info-title">О магазине</div>
+      <div class="info-text">
+        Каталог цифровых товаров и аккаунтов.
+        Ассортимент, цены и условия покупки
+        уточняйте у продавца.
+      </div>
+    </section>
+
+    <!-- Кнопка пока ведёт к заглушке -->
+    <button class="button" id="sellerButton" type="button">
+      Товары продавца →
+    </button>
+
+    <a class="button secondary" href="./index.html">
+      Вернуться в VA Store
+    </a>
+
+    <div class="footer">
+      VA STORE · DIGITAL MARKETPLACE
+    </div>
+
+  </main>
+
+  <div class="bottom">
+    <div class="bottom-inner">
+      <a class="button secondary"
+         href="https://t.me/VAstorTG"
+         target="_blank"
+         rel="noopener noreferrer">
+        ✳ Техническая поддержка
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      tg.setHeaderColor("#09090c");
+      tg.setBackgroundColor("#09090c");
+    }
+
+    document.getElementById("sellerButton").addEventListener("click", () => {
+      if (tg) {
+        tg.showAlert("Раздел товаров пока не настроен.");
+      } else {
+        alert("Раздел товаров пока не настроен.");
+      }
+    });
+  </script>
+</body>
+</html>
