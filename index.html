@@ -6,6 +6,21 @@
   <meta name="theme-color" content="#09090c">
   <title>VA Store</title>
 
+  <script>
+    // =====================================
+    // НАСТРОЙКИ САЙТА
+    // =====================================
+
+    // true  = технические работы включены
+    // false = технические работы выключены
+    const MAINTENANCE_MODE = true;
+
+    // Автоматический переход на страницу техработ
+    if (MAINTENANCE_MODE) {
+      window.location.replace("./maintenance.html");
+    }
+  </script>
+
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
@@ -261,6 +276,7 @@
 
     <header class="header">
       <div class="logo">VA</div>
+
       <div>
         <div class="brand">VA <span>STORE</span></div>
         <div class="subtitle">Маркетплейс Telegram</div>
@@ -269,6 +285,7 @@
 
     <section class="heading">
       <h1>Выбирай своего<br><span>продавца.</span></h1>
+
       <p>
         Магазины цифровых товаров<br>
         в одном месте.
@@ -280,7 +297,7 @@
       <div class="count">01</div>
     </div>
 
-    <!-- Внутренний переход на страницу продавца -->
+    <!-- Переход на страницу продавца -->
     <a href="./telega.html" class="seller">
 
       <div class="seller-top">
@@ -288,6 +305,7 @@
 
         <div>
           <div class="seller-name">Telega Account</div>
+
           <div class="seller-status">
             <span class="dot"></span>
             Продавец VA Store
@@ -313,13 +331,17 @@
 
   <div class="bottom">
     <div class="bottom-inner">
-      <a class="support"
-         href="https://t.me/vaeurope"
-         target="_blank"
-         rel="noopener noreferrer">
+
+      <a
+        class="support"
+        href="https://t.me/VAstorTG"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <span class="support-icon">✳</span>
         Техническая поддержка
       </a>
+
     </div>
   </div>
 
