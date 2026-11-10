@@ -1,0 +1,1090 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#100812">
+<title>VA Pay</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+:root {
+  --bg: #100812;
+  --card: #1b1020;
+  --pink: #ff2e93;
+  --pink-light: #ff70b5;
+  --text: #fff5fb;
+  --muted: #ad9baa;
+  --border: rgba(255,46,147,.2);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(255,46,147,.13), transparent 40%),
+    var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.app {
+  max-width: 480px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 24px 18px 35px;
+  position: relative;
+  z-index: 1;
+}
+
+/* HEADER */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 35px;
+  animation: fadeDown .7s ease both;
+}
+
+.logo {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255,46,147,.5);
+  border-radius: 14px;
+  background: linear-gradient(145deg,#35132c,#170c1b);
+  box-shadow: 0 0 25px rgba(255,46,147,.15);
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  object-fit: contain;
+}
+
+.brand {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.7px;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* HERO */
+
+.hero {
+  position: relative;
+  margin-top: 45px;
+  text-align: center;
+  animation: fadeUp .9s ease both;
+}
+
+.pay-logo {
+  position: relative;
+  width: 125px;
+  height: 125px;
+  margin: 0 auto 35px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,46,147,.4);
+  border-radius: 35px;
+  background: linear-gradient(145deg,#321329,#180c1d);
+  box-shadow: 0 0 35px rgba(255,46,147,.16);
+  animation: float 4s ease-in-out infinite, glow 3s ease-in-out infinite;
+}
+
+.pay-logo img {
+  width: 160%;
+  height: 160%;
+  object-fit: contain;
+}
+
+.orbit {
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  border: 1px solid rgba(255,46,147,.13);
+  border-radius: 42px;
+  animation: rotate 15s linear infinite;
+}
+
+.orbit::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 15px var(--pink);
+}
+
+.title {
+  margin: 0;
+  font-size: 37px;
+  font-weight: 850;
+  letter-spacing: -1.8px;
+}
+
+.title span {
+  color: var(--pink);
+  text-shadow: 0 0 25px rgba(255,46,147,.4);
+}
+
+.tagline {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* WALLET */
+
+.wallet-section {
+  margin-top: 42px;
+  animation: fadeUp 1s ease both;
+}
+
+.wallet-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.wallet-heading h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.wallet-label {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* CARD SLIDER */
+
+.cards-slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  touch-action: pan-y;
+  border-radius: 24px;
+}
+
+.cards-track {
+  display: flex;
+  width: 100%;
+  transition: transform .45s cubic-bezier(.22,.8,.25,1);
+  will-change: transform;
+}
+
+.card-slide {
+  min-width: 100%;
+  width: 100%;
+  padding: 3px 2px 8px;
+}
+
+/* BANK CARD */
+
+.bank-card {
+  position: relative;
+  width: 100%;
+  height: 205px;
+  padding: 22px;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,.2);
+  animation: cardFloat 5s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.bank-card::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -70%;
+  width: 60%;
+  height: 300%;
+  transform: rotate(30deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.16),
+    transparent
+  );
+  animation: cardShine 6s ease-in-out infinite;
+}
+
+.bank-card::after {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  right: -90px;
+  bottom: -140px;
+  border: 1px solid rgba(255,255,255,.17);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 18px rgba(255,255,255,.035),
+    0 0 0 38px rgba(255,255,255,.025);
+}
+
+/* MAIN - PINK */
+
+.main-card {
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(255,255,255,.23), transparent 40%),
+    radial-gradient(ellipse at 0% 100%, rgba(110,0,55,.4), transparent 55%),
+    linear-gradient(125deg,#ff278d 0%,#d81772 48%,#871044 100%);
+  box-shadow:
+    0 15px 45px rgba(255,30,130,.2),
+    inset 0 1px 1px rgba(255,255,255,.25);
+}
+
+/* PARTNER - PURPLE */
+
+.partner-card {
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(255,255,255,.23), transparent 40%),
+    linear-gradient(125deg,#9555ff 0%,#6734c5 48%,#35166f 100%);
+  box-shadow:
+    0 15px 45px rgba(120,65,230,.25),
+    inset 0 1px 1px rgba(255,255,255,.25);
+}
+
+/* INSURANCE - BLUE */
+
+.insurance-card {
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(255,255,255,.23), transparent 40%),
+    linear-gradient(125deg,#329cff 0%,#1763ba 48%,#10346f 100%);
+  box-shadow:
+    0 15px 45px rgba(40,120,255,.25),
+    inset 0 1px 1px rgba(255,255,255,.25);
+}
+
+.card-top,
+.card-bottom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-brand {
+  width: 100px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+}
+
+.card-brand img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.card-type {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  opacity: .8;
+}
+
+.card-chip {
+  width: 37px;
+  height: 28px;
+  margin-top: 22px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 7px;
+  background: linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,.08));
+  position: relative;
+}
+
+.card-chip::before,
+.card-chip::after {
+  content: "";
+  position: absolute;
+  background: rgba(255,255,255,.35);
+}
+
+.card-chip::before {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+}
+
+.card-chip::after {
+  width: 1px;
+  height: 100%;
+  left: 50%;
+}
+
+.card-balance-label {
+  position: relative;
+  z-index: 2;
+  margin-top: 13px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  opacity: .75;
+}
+
+.card-balance {
+  position: relative;
+  z-index: 2;
+  margin-top: 3px;
+  font-size: 29px;
+  font-weight: 850;
+  letter-spacing: -1px;
+}
+
+.card-balance small {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.card-bottom {
+  margin-top: 15px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.card-name {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.card-network {
+  font-size: 11px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -1px;
+}
+
+/* SLIDER NAVIGATION */
+
+.slider-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.slider-arrow {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: white;
+  font-size: 23px;
+  display: grid;
+  place-items: center;
+  transition: .2s;
+}
+
+.slider-arrow:active {
+  transform: scale(.9);
+  background: #32152c;
+}
+
+.slider-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.slider-dot {
+  width: 7px;
+  height: 7px;
+  border: none;
+  border-radius: 10px;
+  background: #60465d;
+  transition: .3s;
+  padding: 0;
+}
+
+.slider-dot.active {
+  width: 23px;
+  background: var(--pink);
+}
+
+.card-counter {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 42px;
+  text-align: center;
+}
+
+.card-note {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+  min-height: 15px;
+}
+
+/* WITHDRAW */
+
+.withdraw-button {
+  width: 100%;
+  height: 54px;
+  margin-top: 17px;
+  border: 1px solid rgba(255,46,147,.5);
+  border-radius: 16px;
+  background: linear-gradient(100deg,#ff278d,#e7197c);
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 8px 25px rgba(255,46,147,.2);
+  transition: .25s ease;
+}
+
+.withdraw-button:active {
+  transform: scale(.97);
+  box-shadow: 0 3px 12px rgba(255,46,147,.2);
+}
+
+.withdraw-button:hover {
+  box-shadow: 0 8px 35px rgba(255,46,147,.4);
+}
+
+/* STATUS */
+
+.status-card {
+  margin-top: 32px;
+  padding: 25px 20px;
+  border: 1px solid var(--border);
+  border-radius: 23px;
+  background: linear-gradient(145deg,rgba(36,19,41,.97),rgba(22,12,26,.97));
+  box-shadow: 0 15px 45px rgba(0,0,0,.2);
+  animation: fadeUp 1.1s ease both;
+}
+
+.status-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: var(--pink-light);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 12px var(--pink);
+  animation: pulse 1.8s infinite;
+}
+
+.status-title {
+  margin-top: 19px;
+  text-align: center;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.status-description {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* FEATURES */
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 17px;
+  animation: fadeUp 1.3s ease both;
+}
+
+.feature {
+  padding: 17px 14px;
+  border: 1px solid rgba(255,46,147,.15);
+  border-radius: 17px;
+  background: rgba(27,16,32,.8);
+}
+
+.feature-title {
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.feature-description {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* FOOTER */
+
+.footer {
+  margin-top: 45px;
+  color: #796779;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.footer span {
+  color: var(--pink-light);
+}
+
+/* TOAST */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  z-index: 9999;
+  width: calc(100% - 40px);
+  max-width: 400px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255,46,147,.35);
+  border-radius: 15px;
+  background: #241329;
+  color: white;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+  box-shadow: 0 10px 35px rgba(0,0,0,.4);
+  opacity: 0;
+  transform: translate(-50%,20px);
+  pointer-events: none;
+  transition: .3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%,0);
+}
+
+/* PARTICLES */
+
+.particles {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 12px var(--pink);
+  opacity: 0;
+  animation: particle 7s linear infinite;
+}
+
+.particle:nth-child(1) { left: 12%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 85%; animation-delay: 2s; }
+.particle:nth-child(3) { left: 45%; animation-delay: 4s; }
+.particle:nth-child(4) { left: 70%; animation-delay: 1s; }
+.particle:nth-child(5) { left: 25%; animation-delay: 3s; }
+
+/* ANIMATIONS */
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  0%,100% { box-shadow: 0 0 25px rgba(255,46,147,.12); }
+  50% { box-shadow: 0 0 50px rgba(255,46,147,.3); }
+}
+
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  50% { opacity: .35; transform: scale(.75); }
+}
+
+@keyframes particle {
+  0% { top: 110%; opacity: 0; }
+  15% { opacity: .7; }
+  85% { opacity: .4; }
+  100% { top: -10%; opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardFloat {
+  0%,100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-6px) rotateX(2deg); }
+}
+
+@keyframes cardShine {
+  0%,35% { left: -100%; }
+  65%,100% { left: 150%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .cards-track {
+    transition: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="particles">
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<main class="app">
+
+  <!-- HEADER -->
+
+  <header class="header">
+    <div class="logo">
+      <img src="sellers/resources/VA.png" alt="VA">
+    </div>
+
+    <div>
+      <div class="brand">VA PAY</div>
+      <div class="subtitle">VA Partners version</div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="pay-logo">
+      <div class="orbit"></div>
+      <img src="sellers/resources/vapay.png" alt="VA Pay">
+    </div>
+
+    <h1 class="title">VA <span>Pay</span></h1>
+
+    <div class="tagline">
+      Платежная система<br>
+      для партнёров VA Group
+    </div>
+
+  </section>
+
+  <!-- WALLET -->
+
+  <section class="wallet-section">
+
+    <div class="wallet-heading">
+      <h2 id="walletTitle">Основной счёт</h2>
+      <span class="wallet-label">VA Partners</span>
+    </div>
+
+    <div class="cards-slider" id="cardsSlider">
+
+      <div class="cards-track" id="cardsTrack">
+
+        <!-- MAIN CARD -->
+
+        <div class="card-slide">
+          <div class="bank-card main-card">
+
+            <div class="card-top">
+              <div class="card-brand">
+                <img src="sellers/resources/VApaybig.png" alt="VA PAY">
+              </div>
+              <div class="card-type">MAIN CARD</div>
+            </div>
+
+            <div class="card-chip"></div>
+
+            <div class="card-balance-label">
+              AVAILABLE BALANCE
+            </div>
+
+            <div class="card-balance">
+              1.00 <small>USDT</small>
+            </div>
+
+            <div class="card-bottom">
+              <div class="card-name">MAIN ACCOUNT</div>
+              <div class="card-network">VA Group</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PARTNER CARD -->
+
+        <div class="card-slide">
+          <div class="bank-card partner-card">
+
+            <div class="card-top">
+              <div class="card-brand">
+                <img src="sellers/resources/VApaybig.png" alt="VA PAY">
+              </div>
+              <div class="card-type">PARTNER CARD</div>
+            </div>
+
+            <div class="card-chip"></div>
+
+            <div class="card-balance-label">
+              PARTNER BALANCE
+            </div>
+
+            <div class="card-balance">
+              0.00 <small>USDT</small>
+            </div>
+
+            <div class="card-bottom">
+              <div class="card-name">PARTNER ACCOUNT</div>
+              <div class="card-network">VA Partners</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- INSURANCE CARD -->
+
+        <div class="card-slide">
+          <div class="bank-card insurance-card">
+
+            <div class="card-top">
+              <div class="card-brand">
+                <img src="sellers/resources/VApaybig.png" alt="VA PAY">
+              </div>
+              <div class="card-type">INSURANCE CARD</div>
+            </div>
+
+            <div class="card-chip"></div>
+
+            <div class="card-balance-label">
+              INSURANCE BALANCE
+            </div>
+
+            <div class="card-balance">
+              0.00 <small>USDT</small>
+            </div>
+
+            <div class="card-bottom">
+              <div class="card-name">INSURANCE ACCOUNT</div>
+              <div class="card-network">VA Security</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+
+    <div class="slider-navigation">
+
+      <button class="slider-arrow" id="prevCard" aria-label="Предыдущая карта">
+        ‹
+      </button>
+
+      <div class="slider-dots">
+        <button class="slider-dot active" data-index="0" aria-label="Основная"></button>
+        <button class="slider-dot" data-index="1" aria-label="Партнёрская"></button>
+        <button class="slider-dot" data-index="2" aria-label="Страховая"></button>
+      </div>
+
+      <span class="card-counter" id="cardCounter">
+        01 / 03
+      </span>
+
+      <button class="slider-arrow" id="nextCard" aria-label="Следующая карта">
+        ›
+      </button>
+
+    </div>
+
+    <div class="card-note" id="cardNote">
+      Основной баланс VA Pay
+    </div>
+
+    <button class="withdraw-button" id="withdrawButton">
+      Вывести средства
+    </button>
+
+  </section>
+
+  <!-- STATUS -->
+
+  <section class="status-card">
+
+    <div class="status-top">
+      <div class="status-dot"></div>
+      VA PAY SYSTEM
+    </div>
+
+    <div class="status-title">
+      Платёжная система VA
+    </div>
+
+    <p class="status-description">
+      Единая платёжная инфраструктура VA Group.
+      Управление балансами и партнёрскими средствами
+      в одном интерфейсе.
+    </p>
+
+  </section>
+
+  <!-- FEATURES -->
+
+  <section class="features">
+
+    <div class="feature">
+      <div class="feature-title">Платежи</div>
+      <div class="feature-description">
+        Удобная система проведения платежей
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-title">TON</div>
+      <div class="feature-description">
+        Интеграция с блокчейном TON
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-title">VA Ecosystem</div>
+      <div class="feature-description">
+        Вывод средств с VA Store
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-title">Soon</div>
+      <div class="feature-description">
+        Soon...
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+    <span>VA PAY</span> · Testnet <br>
+    © 2026 VA STORE
+  </footer>
+
+</main>
+
+<!-- NOTIFICATION -->
+
+<div class="toast" id="toast">
+  Демо версия, ничего не трогать!
+</div>
+
+<script>
+
+// =====================================
+// TELEGRAM WEB APP
+// =====================================
+
+const tg = window.Telegram?.WebApp;
+
+if (tg) {
+  tg.ready();
+  tg.expand();
+
+  tg.setHeaderColor("#100812");
+  tg.setBackgroundColor("#100812");
+}
+
+// =====================================
+// CARD SLIDER
+// =====================================
+
+const cardsTrack = document.getElementById('cardsTrack');
+const slider = document.getElementById('cardsSlider');
+
+const walletTitle = document.getElementById('walletTitle');
+const cardCounter = document.getElementById('cardCounter');
+const cardNote = document.getElementById('cardNote');
+
+const dots = document.querySelectorAll('.slider-dot');
+
+const cardNames = [
+  'Основной счёт',
+  'Партнёрский счёт',
+  'Страховой счёт'
+];
+
+const cardNotes = [
+  'Основной баланс VA Pay',
+  'Баланс партнёрской программы VA',
+  'Резервный страховой баланс VA'
+];
+
+let currentCard = 0;
+
+function showCard(index) {
+
+  currentCard = Math.max(0, Math.min(2, index));
+
+  cardsTrack.style.transform =
+    `translateX(-${currentCard * 100}%)`;
+
+  walletTitle.textContent = cardNames[currentCard];
+
+  cardNote.textContent = cardNotes[currentCard];
+
+  cardCounter.textContent =
+    `0${currentCard + 1} / 03`;
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle(
+      'active',
+      i === currentCard
+    );
+  });
+
+  if (tg) {
+    tg.HapticFeedback?.selectionChanged();
+  }
+}
+
+// Previous card
+
+document.getElementById('prevCard').addEventListener('click', () => {
+  showCard(currentCard - 1);
+});
+
+// Next card
+
+document.getElementById('nextCard').addEventListener('click', () => {
+  showCard(currentCard + 1);
+});
+
+// Dots
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    showCard(Number(dot.dataset.index));
+  });
+});
+
+// =====================================
+// TOUCH SWIPE
+// =====================================
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+slider.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+slider.addEventListener('touchend', e => {
+
+  touchEndX = e.changedTouches[0].screenX;
+
+  const difference = touchStartX - touchEndX;
+
+  if (Math.abs(difference) < 45) return;
+
+  if (difference > 0) {
+    showCard(currentCard + 1);
+  } else {
+    showCard(currentCard - 1);
+  }
+
+}, { passive: true });
+
+// =====================================
+// WITHDRAW BUTTON
+// =====================================
+
+const withdrawButton = document.getElementById('withdrawButton');
+const toast = document.getElementById('toast');
+
+let toastTimer;
+
+withdrawButton.addEventListener('click', function() {
+
+  toast.classList.add('show');
+
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+  }
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+
+  if (tg) {
+    tg.HapticFeedback?.impactOccurred('light');
+  }
+
+});
+
+</script>
+
+</body>
+</html>
